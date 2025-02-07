@@ -1,0 +1,109 @@
+[
+  {
+    "name": "Congressional Data & Executive Orders",
+    "img": "https://junior.scholastic.com/content/dam/classroom-magazines/junior-scholastic/issues/2019-20/090219/a-day-in-the-life-of-a-member-of-congress/JS090219Congress_HeroT.jpg",
+    "img_dark": "",
+    "img_light": "",
+    "description": "This template includes data from the Congressional API and the Federal Register API to provide a comprehensive view of Congressional data and Executive Orders.",
+    "allowCustomization": true,
+    "tabs": {
+      "bill-summaries": {
+        "id": "bill-summaries",
+        "name": "Bill Summaries",
+        "layout": [
+          {
+            "i": "billsList",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "number": "29"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          },
+          {
+            "i": "billSummaries",
+            "x": 0,
+            "y": 17,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "number": "29"
+              }
+            }
+          },
+          {
+            "i": "billTextVersions",
+            "x": 0,
+            "y": 32,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "number": "29"
+              }
+            }
+          }
+        ]
+      },
+      "executive-orders": {
+        "id": "executive-orders",
+        "name": "Executive Orders",
+        "layout": [
+          {
+            "i": "presidentialDocuments",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "document_types": [
+                  "executive_order",
+                  "memorandum",
+                  "proclamation",
+                  "presidential_order",
+                  "notice"
+                ]
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              }
+            }
+          },
+          {
+            "i": "presidentialDocumentsPdf",
+            "x": 0,
+            "y": 14,
+            "w": 40,
+            "h": 23,
+            "state": {
+              "params": {
+                "url": "https://www.govinfo.gov/content/pkg/FR-2025-02-03/pdf/2025-02182.pdf"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Group 1",
+        "defaultValue": "29",
+        "widgetIds": [
+          "billsList",
+          "billSummaries",
+          "billTextVersions"
+        ]
+      }
+    ]
+  }
+]

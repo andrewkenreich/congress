@@ -1,0 +1,801 @@
+{
+  "billsList": {
+    "name": "Congress Bills",
+    "description": "Get list of bills from Congress",
+    "category": "government",
+    "searchCategory": "congress",
+    "defaultViz": "table",
+    "endpoint": "congress/bills",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "headerName": "Congress",
+            "field": "congress",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Latest Action Date",
+            "field": "latest_action_date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Latest ActionText",
+            "field": "latest_action_text",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Number",
+            "field": "number",
+            "chartDataType": "category",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+              "actionType": "groupBy"
+            }
+          },
+          {
+            "headerName": "Origin Chamber",
+            "field": "origin_chamber",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Origin Chamber Code",
+            "field": "origin_chamber_code",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Title",
+            "field": "title",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Type",
+            "field": "type",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Update Date",
+            "field": "update_date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Update Date Including Text",
+            "field": "update_date_including_text",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "URL",
+            "field": "url",
+            "chartDataType": "category"
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "paramName": "number",
+        "description": "The bill number to get details for",
+        "value": "51",
+        "label": "Bill Number",
+        "type": "endpoint",
+        "show": false,
+        "optionsEndpoint": "congress/bills/list"
+      },
+      {
+        "paramName": "limit",
+        "value": 100,
+        "description": "Number of records to return",
+        "label": "Limit",
+        "type": "number"
+      },
+      {
+        "paramName": "fromDateTime",
+        "value": "$currentDate-1w",
+        "description": "Start date - based on Update Date",
+        "label": "From Date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "paramName": "toDateTime",
+        "value": "$currentDate+1d",
+        "description": "End date - based on Update Date",
+        "label": "To Date",
+        "type": "date",
+        "required": false
+      }
+    ]
+  },
+  "congressBillsFiltered": {
+    "name": "Filtered Congress Bills",
+    "description": "Displays a list of bills filtered by congress and bill type.",
+    "category": "government",
+    "searchCategory": "congress",
+    "defaultViz": "table",
+    "endpoint": "congress/{congress}/bills/{billType}/filtered",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "headerName": "Congress",
+            "field": "congress",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Bill Number",
+            "field": "number",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Title",
+            "field": "title",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Latest Action Date",
+            "field": "latest_action_date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Latest ActionText",
+            "field": "latest_action_text",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Update Date",
+            "field": "update_date",
+            "chartDataType": "category"
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "paramName": "congress",
+        "value": 119,
+        "description": "The congress number to filter bills by.",
+        "label": "Congress",
+        "required": true
+      },
+      {
+        "paramName": "billType",
+        "value": "hr",
+        "description": "The type of bill to filter by - must match the Congress Bill Type",
+        "label": "Bill Type (hr, s, hjres, sjres, hconres, sconres, hres, sres)",
+        "required": true,
+        "options": [
+          {
+            "value": "hr",
+            "label": "hr - House Bill"
+          },
+          {
+            "value": "s",
+            "label": "s - Senate Bill"
+          },
+          {
+            "value": "hjres",
+            "label": "hjres - House Joint Resolution"
+          },
+          {
+            "value": "sjres",
+            "label": "sjres - Senate Joint Resolution"
+          },
+          {
+            "value": "hconres",
+            "label": "hconres - House Concurrent Resolution"
+          },
+          {
+            "value": "sconres",
+            "label": "sconres - Senate Concurrent Resolution"
+          },
+          {
+            "value": "hres",
+            "label": "hres - House Resolution"
+          },
+          {
+            "value": "sres",
+            "label": "sres - Senate Resolution"
+          }
+        ]
+      }
+    ]
+  },
+  "billSummaries": {
+    "name": "Bill Summaries",
+    "description": "Get summaries of a specific bill",
+    "category": "government",
+    "searchCategory": "congress",
+    "defaultViz": "markdown",
+    "endpoint": "summaries/{congress}/bills/{billType}/{number}",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "headerName": "Action Date",
+            "field": "action_date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Action Description",
+            "field": "action_desc",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Text",
+            "field": "text",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Update Date",
+            "field": "update_date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Version Code",
+            "field": "version_code",
+            "chartDataType": "category"
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "paramName": "congress",
+        "value": 119,
+        "description": "Congress number",
+        "label": "Congress",
+        "type": "number",
+        "required": true
+      },
+      {
+        "paramName": "billType",
+        "value": "hr",
+        "description": "The type of bill to filter by - must match the Congress Bill Type",
+        "label": "Bill Type (hr, s, hjres, sjres, hconres, sconres, hres, sres)",
+        "required": true,
+        "options": [
+          {
+            "value": "hr",
+            "label": "hr - House Bill"
+          },
+          {
+            "value": "s",
+            "label": "s - Senate Bill"
+          },
+          {
+            "value": "hjres",
+            "label": "hjres - House Joint Resolution"
+          },
+          {
+            "value": "sjres",
+            "label": "sjres - Senate Joint Resolution"
+          },
+          {
+            "value": "hconres",
+            "label": "hconres - House Concurrent Resolution"
+          },
+          {
+            "value": "sconres",
+            "label": "sconres - Senate Concurrent Resolution"
+          },
+          {
+            "value": "hres",
+            "label": "hres - House Resolution"
+          },
+          {
+            "value": "sres",
+            "label": "sres - Senate Resolution"
+          }
+        ]
+      },
+      {
+        "paramName": "number",
+        "description": "The bill number to get details for",
+        "value": 29,
+        "label": "Bill Number",
+        "type": "endpoint",
+        "show": true,
+        "optionsEndpoint": "congress/bills/list"
+      }
+    ]
+  },
+  "billTextVersions": {
+    "name": "Bill Text Versions",
+    "description": "Get text versions of a specific bill",
+    "category": "government",
+    "searchCategory": "congress",
+    "type": "file_viewer",
+    "fileEndpoint": "get_bill_html",
+    "endpoint": "congress/{congress}/bills/{billType}/{number}/text",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "params": [
+      {
+        "paramName": "congress",
+        "value": 119,
+        "description": "Congress number",
+        "label": "Congress",
+        "type": "number",
+        "required": true
+      },
+      {
+        "paramName": "billType",
+        "value": "hr",
+        "description": "The type of bill to filter by - must match the Congress Bill Type",
+        "label": "Bill Type (hr, s, hjres, sjres, hconres, sconres, hres, sres)",
+        "required": true,
+        "options": [
+          {
+            "value": "hr",
+            "label": "hr - House Bill"
+          },
+          {
+            "value": "s",
+            "label": "s - Senate Bill"
+          },
+          {
+            "value": "hjres",
+            "label": "hjres - House Joint Resolution"
+          },
+          {
+            "value": "sjres",
+            "label": "sjres - Senate Joint Resolution"
+          },
+          {
+            "value": "hconres",
+            "label": "hconres - House Concurrent Resolution"
+          },
+          {
+            "value": "sconres",
+            "label": "sconres - Senate Concurrent Resolution"
+          },
+          {
+            "value": "hres",
+            "label": "hres - House Resolution"
+          },
+          {
+            "value": "sres",
+            "label": "sres - Senate Resolution"
+          }
+        ]
+      },
+      {
+        "paramName": "number",
+        "description": "The bill number to get details for",
+        "value": 29,
+        "label": "Bill Number",
+        "type": "endpoint",
+        "show": true,
+        "optionsEndpoint": "congress/bills/list"
+      }
+    ]
+  },
+  "billSummariesbulk": {
+    "name": "Bulk Bill Summaries",
+    "description": "Get summaries of all bills",
+    "category": "government",
+    "searchCategory": "congress",
+    "defaultViz": "table",
+    "endpoint": "summary/congress/{congress}/bills/{billType}/summaries",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "headerName": "Action Date",
+            "field": "action_date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Action Description",
+            "field": "action_desc",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Text",
+            "field": "text",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Update Date",
+            "field": "update_date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Version Code",
+            "field": "version_code",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Congress",
+            "field": "bill.congress",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Bill Number",
+            "field": "bill.number",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Origin Chamber",
+            "field": "bill.originChamber",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Origin Chamber Code",
+            "field": "bill.originChamberCode",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Title",
+            "field": "bill.title",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Type",
+            "field": "bill.type",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "URL",
+            "field": "bill.url",
+            "chartDataType": "category"
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "paramName": "congress",
+        "value": 119,
+        "description": "The congress number.",
+        "label": "Congress",
+        "type": "number",
+        "required": true
+      },
+      {
+        "paramName": "billType",
+        "value": "hr",
+        "description": "The type of bill to filter by - must match the Congress Bill Type",
+        "label": "Bill Type (hr, s, hjres, sjres, hconres, sconres, hres, sres)",
+        "required": true,
+        "options": [
+          {
+            "value": "hr",
+            "label": "hr - House Bill"
+          },
+          {
+            "value": "s",
+            "label": "s - Senate Bill"
+          },
+          {
+            "value": "hjres",
+            "label": "hjres - House Joint Resolution"
+          },
+          {
+            "value": "sjres",
+            "label": "sjres - Senate Joint Resolution"
+          },
+          {
+            "value": "hconres",
+            "label": "hconres - House Concurrent Resolution"
+          },
+          {
+            "value": "sconres",
+            "label": "sconres - Senate Concurrent Resolution"
+          },
+          {
+            "value": "hres",
+            "label": "hres - House Resolution"
+          },
+          {
+            "value": "sres",
+            "label": "sres - Senate Resolution"
+          }
+        ]
+      },
+      {
+        "paramName": "format",
+        "value": "json",
+        "description": "Data format",
+        "label": "Format",
+        "type": "text",
+        "required": false
+      },
+      {
+        "paramName": "offset",
+        "value": 0,
+        "description": "Starting record",
+        "label": "Offset",
+        "type": "number",
+        "required": false
+      },
+      {
+        "paramName": "limit",
+        "value": 100,
+        "description": "Number of records",
+        "label": "Limit",
+        "type": "number",
+        "required": false
+      },
+      {
+        "paramName": "fromDateTime",
+        "value": null,
+        "description": "Start date",
+        "label": "From Date",
+        "type": "text",
+        "required": false
+      },
+      {
+        "paramName": "toDateTime",
+        "value": null,
+        "description": "End date",
+        "label": "To Date",
+        "type": "text",
+        "required": false
+      },
+      {
+        "paramName": "sort",
+        "value": "updateDate+desc",
+        "description": "Sort order",
+        "label": "Sort",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  "dailyCongressionalRecords": {
+    "name": "Daily Congressional Records",
+    "description": "Get a list of daily congressional records.",
+    "category": "government",
+    "searchCategory": "congress",
+    "defaultViz": "table",
+    "endpoint": "daily-congressional-records",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "headerName": "Volume Number",
+            "field": "volumeNumber",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Issue Number",
+            "field": "issueNumber",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Date",
+            "field": "date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "URL",
+            "field": "url",
+            "chartDataType": "category"
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "paramName": "limit",
+        "value": 100,
+        "description": "Number of records",
+        "label": "Limit",
+        "type": "number"
+      }
+    ]
+  },
+  "congressionalRecordByVolumeIssue": {
+    "name": "Congressional Record by Volume and Issue",
+    "description": "Get congressional records filtered by volume and issue number.",
+    "category": "government",
+    "searchCategory": "congress",
+    "defaultViz": "table",
+    "endpoint": "daily-congressional-record/{volumeNumber}/{issueNumber}",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "headerName": "Volume Number",
+            "field": "volumeNumber",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Issue Number",
+            "field": "issueNumber",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "Date",
+            "field": "date",
+            "chartDataType": "category"
+          },
+          {
+            "headerName": "URL",
+            "field": "url",
+            "chartDataType": "category"
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "paramName": "volumeNumber",
+        "value": "166",
+        "description": "The specified volume of the daily Congressional record.",
+        "label": "Volume Number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "paramName": "issueNumber",
+        "value": "1",
+        "description": "The specified issue number of the daily Congressional record.",
+        "label": "Issue Number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "paramName": "format",
+        "value": "json",
+        "description": "Data format",
+        "label": "Format",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  "presidentialDocuments": {
+    "name": "Presidential Documents",
+    "description": "Get a list of presidential documents.",
+    "category": "government",
+    "searchCategory": "congress",
+    "defaultViz": "table",
+    "endpoint": "federal-register/presidential-documents",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "data": {
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "headerName": "PDF URL",
+            "field": "pdf_url",
+            "chartDataType": "category"
+          }
+        ]
+      }
+    },
+    "params": [
+      {
+        "paramName": "per_page",
+        "value": 20,
+        "description": "Number of records",
+        "label": "Limit",
+        "type": "number"
+      },
+      {
+        "paramName": "document_types",
+        "value": "executive_order",
+        "description": "Document type",
+        "label": "Document Type",
+        "options": [
+          {
+            "label": "EXECUTIVE_ORDER",
+            "value": "executive_order"
+          },
+          {
+            "label": "MEMORANDUM",
+            "value": "memorandum"
+          },
+          {
+            "label": "NOTICE",
+            "value": "notice"
+          },
+          {
+            "label": "PROCLAMATION",
+            "value": "proclamation"
+          },
+          {
+            "label": "PRESIDENTIAL_ORDER",
+            "value": "presidential_order"
+          },
+          {
+            "label": "OTHER",
+            "value": "other"
+          }
+        ],
+        "type": "text",
+        "multiSelect": true
+      },
+      {
+        "paramName": "president",
+        "value": "donald-trump",
+        "description": "President",
+        "label": "President",
+        "options": [
+          {
+            "label": "CLINTON",
+            "value": "william-j-clinton"
+          },
+          {
+            "label": "BUSH",
+            "value": "george-w-bush"
+          },
+          {
+            "label": "OBAMA",
+            "value": "barack-obama"
+          },
+          {
+            "label": "TRUMP",
+            "value": "donald-trump"
+          },
+          {
+            "label": "BIDEN",
+            "value": "joe-biden"
+          }
+        ],
+        "type": "text",
+        "multiSelect": true
+      }
+    ]
+  },
+  "presidentialDocumentsPdf": {
+    "name": "Presidential Executive Orders PDFs - TRUMP",
+    "description": "PDFs of Presidential Executive Orders - TRUMP",
+    "category": "government",
+    "searchCategory": "congress",
+    "type": "pdf",
+    "runButton": false,
+    "endpoint": "get-presidential-document-pdf",
+    "gridData": {
+      "w": 20,
+      "h": 9
+    },
+    "params": [
+      {
+        "type": "endpoint",
+        "paramName": "url",
+        "value": "https://www.govinfo.gov/content/pkg/FR-2025-02-06/pdf/2025-02345.pdf",
+        "label": "URL",
+        "description": "URL of the file",
+        "optionsEndpoint": "presidential-documents/pdfs"
+      }
+    ]
+  }
+}
