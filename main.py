@@ -526,12 +526,15 @@ async def get_presidential_document_pdf(url: Optional[str] = None):
         content = base64.b64encode(response.content).decode("utf-8")
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=400, detail=f"Error fetching presidential document PDF: {str(e)}")
+    
+    filename = url.split('/')[-1]
+    print(filename)
     return JSONResponse(
         headers={"Content-Type": "application/json"},
         content={
             "data_format": {
                 "data_type": "pdf",
-                "filename": url,
+                "filename": filename,
             },
             "content": content,
         },
