@@ -35,7 +35,8 @@
             "chartDataType": "category",
             "renderFn": "cellOnClick",
             "renderFnParams": {
-              "actionType": "groupBy"
+              "actionType": "groupBy",
+              "groupByParamName": "number"
             }
           },
           {
@@ -789,12 +790,51 @@
     },
     "params": [
       {
+        "paramName": "per_page",
+        "type": "text",
+        "description": "Number of records",
+        "value": 20
+      },
+      {
+        "paramName": "document_types",
+        "type": "text",
+        "description": "Document type",
+        "options": [
+          {
+            "executive_order": "executive_order",
+            "label": "Executive Order"
+          },
+          {
+            "memorandum": "memorandum",
+            "label": "Memorandum"
+          }
+        ]
+      },
+      {
+        "paramName": "president",
+        "type": "text",
+        "description": "President",
+        "options": [
+          {
+            "trump": "donald-trump",
+            "label": "Donald Trump"
+          },
+          {
+            "biden": "joe-biden",
+            "label": "Joe Biden"
+          }
+        ]
+      },
+      {
         "type": "endpoint",
         "paramName": "url",
         "value": "https://www.govinfo.gov/content/pkg/FR-2025-02-06/pdf/2025-02345.pdf",
         "label": "URL",
         "description": "URL of the file",
-        "optionsEndpoint": "presidential-documents/pdfs"
+        "optionsEndpoint": "presidential-documents/pdfs",
+        "optionsParams": {
+          "search": "$search"
+        }
       }
     ]
   }
