@@ -98,12 +98,18 @@
       {
         "name": "Group 1",
         "defaultValue": "29",
+        "type": "param",
+        "paramName": "number",
         "widgetIds": [
           "billsList",
           "billSummaries",
           "billTextVersions"
         ]
       }
+    ],
+    "prompts": [
+      "test",
+      "test2"
     ]
   }
 ]

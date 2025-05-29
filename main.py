@@ -1,12 +1,13 @@
 import base64
+from pydantic import BaseModel, Field
 import json
 from pathlib import Path
 import os
-from typing import List, Optional
-
+from typing import Any, Dict, List, Literal, Optional, Union
+from uuid import UUID
 
 import requests
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi_cache import FastAPICache
@@ -36,7 +37,8 @@ origins = [
     "https://pro.openbb.co",
     "https://excel.openbb.co",
     "https://excel.openbb.dev",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://pro.azure.openbb.dev"
 ]
 
 app.add_middleware(
@@ -64,11 +66,11 @@ def get_widgets():
         content=json.load((Path(__file__).parent.resolve() / "widgets.json").open())
     )
 
-@app.get("/templates.json")
-def get_templates():
-    """Templates configuration file for the OpenBB Terminal Pro"""
+@app.get("/apps.json")
+def get_apps():
+    """Apps configuration file for the OpenBB Terminal Pro"""
     return JSONResponse(
-        content=json.load((Path(__file__).parent.resolve() / "templates.json").open())
+        content=json.load((Path(__file__).parent.resolve() / "apps.json").open())
     )
 
 # Returns a list of bills sorted by date of latest action.
@@ -444,7 +446,9 @@ async def get_bill_numbers(
         bills_data = response.json().get("bills", [])
 
         # Extract bill numbers from the response
-        bill_numbers = [bill.get("number") for bill in bills_data if bill.get("number")]
+        bill_numbers = [int(bill.get("number")) for bill in bills_data if bill.get("number")]
+
+        print(bill_numbers)
 
         return bill_numbers
     except requests.exceptions.RequestException as e:
@@ -534,7 +538,7 @@ async def get_presidential_document_pdf(url: Optional[str] = None):
         content={
             "data_format": {
                 "data_type": "pdf",
-                "filename": filename,
+                "filename": url,
             },
             "content": content,
         },
