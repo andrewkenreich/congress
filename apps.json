@@ -98,7 +98,7 @@
       {
         "name": "Group 1",
         "defaultValue": "29",
-        "type": "param",
+        "type": "endpointParam",
         "paramName": "number",
         "widgetIds": [
           "billsList",
