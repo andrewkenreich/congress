@@ -448,6 +448,8 @@ async def get_bill_numbers(
         # Extract bill numbers from the response
         bill_numbers = [int(bill.get("number")) for bill in bills_data if bill.get("number")]
 
+        print(bill_numbers)
+
         return bill_numbers
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Error fetching bill numbers: {str(e)}")
@@ -516,31 +518,6 @@ async def get_presidential_documents(
             status_code=500,
             detail=f"Error fetching presidential documents: {str(e)}"
         )
-    
-
-# For getting Presidential Documents pdf
-@app.get("/get-presidential-document-pdf")
-async def get_presidential_document_pdf(url: Optional[str] = None):
-    """Serve a file through base64 encoding."""
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        content = base64.b64encode(response.content).decode("utf-8")
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=400, detail=f"Error fetching presidential document PDF: {str(e)}")
-    
-    filename = url.split('/')[-1]
-    return JSONResponse(
-        headers={"Content-Type": "application/json"},
-        content={
-            "data_format": {
-                "data_type": "pdf",
-                "filename": url,
-            },
-            "content": content,
-        },
-    )
-
 
 # For getting Presidential Documents pdfs
 @app.get("/presidential-documents/pdfs")
