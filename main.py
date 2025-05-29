@@ -448,8 +448,6 @@ async def get_bill_numbers(
         # Extract bill numbers from the response
         bill_numbers = [int(bill.get("number")) for bill in bills_data if bill.get("number")]
 
-        print(bill_numbers)
-
         return bill_numbers
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Error fetching bill numbers: {str(e)}")
@@ -532,7 +530,6 @@ async def get_presidential_document_pdf(url: Optional[str] = None):
         raise HTTPException(status_code=400, detail=f"Error fetching presidential document PDF: {str(e)}")
     
     filename = url.split('/')[-1]
-    print(filename)
     return JSONResponse(
         headers={"Content-Type": "application/json"},
         content={
