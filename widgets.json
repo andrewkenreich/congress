@@ -777,63 +777,106 @@
     ]
   },
   "presidentialDocumentsPdf": {
-    "name": "Presidential Executive Orders PDFs - TRUMP",
-    "description": "PDFs of Presidential Executive Orders - TRUMP",
+    "name": "Presidential Executive Orders PDFs",
+    "description": "View Presidential Executive Orders and other documents as PDFs",
     "category": "government",
     "searchCategory": "congress",
-    "type": "pdf",
+    "type": "multi_file_viewer",
     "runButton": false,
-    "endpoint": "get-presidential-document-pdf",
+    "endpoint": "presidential-documents/view",
     "gridData": {
       "w": 20,
       "h": 9
     },
     "params": [
       {
-        "paramName": "per_page",
+        "paramName": "president",
         "type": "text",
-        "description": "Number of records",
-        "value": 20
+        "description": "President",
+        "label": "President",
+        "value": "donald-trump",
+        "options": [
+          {
+            "label": "William J. Clinton",
+            "value": "william-j-clinton"
+          },
+          {
+            "label": "George W. Bush",
+            "value": "george-w-bush"
+          },
+          {
+            "label": "Barack Obama",
+            "value": "barack-obama"
+          },
+          {
+            "label": "Donald Trump",
+            "value": "donald-trump"
+          },
+          {
+            "label": "Joe Biden",
+            "value": "joe-biden"
+          }
+        ]
       },
       {
         "paramName": "document_types",
         "type": "text",
         "description": "Document type",
+        "label": "Document Type",
+        "value": [
+          "executive_order"
+        ],
+        "multiSelect": true,
         "options": [
           {
-            "executive_order": "executive_order",
-            "label": "Executive Order"
+            "label": "Executive Order",
+            "value": "executive_order"
           },
           {
-            "memorandum": "memorandum",
-            "label": "Memorandum"
+            "label": "Memorandum",
+            "value": "memorandum"
+          },
+          {
+            "label": "Notice",
+            "value": "notice"
+          },
+          {
+            "label": "Proclamation",
+            "value": "proclamation"
+          },
+          {
+            "label": "Presidential Order",
+            "value": "presidential_order"
+          },
+          {
+            "label": "Other",
+            "value": "other"
           }
         ]
       },
       {
-        "paramName": "president",
-        "type": "text",
-        "description": "President",
-        "options": [
-          {
-            "trump": "donald-trump",
-            "label": "Donald Trump"
-          },
-          {
-            "biden": "joe-biden",
-            "label": "Joe Biden"
-          }
-        ]
+        "paramName": "per_page",
+        "type": "number",
+        "description": "Number of records",
+        "label": "Limit",
+        "value": 20
       },
       {
         "type": "endpoint",
         "paramName": "url",
-        "value": "https://www.govinfo.gov/content/pkg/FR-2025-02-06/pdf/2025-02345.pdf",
-        "label": "URL",
-        "description": "URL of the file",
+        "value": [],
+        "label": "Documents",
+        "description": "Select presidential documents to view",
         "optionsEndpoint": "presidential-documents/pdfs",
+        "roles": [
+          "fileSelector"
+        ],
+        "multiSelect": true,
+        "show": false,
         "optionsParams": {
-          "search": "$search"
+          "president": "$president",
+          "document_types": "$document_types",
+          "per_page": "$per_page"
         }
       }
     ]

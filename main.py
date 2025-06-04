@@ -461,7 +461,7 @@ async def get_bill_numbers(
 @cache(expire=3600)  # Cache for 1 hour
 async def get_presidential_documents(
     president: President,
-     document_types: str = Query(default="executive_order"),
+    document_types: str = Query(default="executive_order"),
     per_page: int = Query(20, le=100),
     page: int = Query(1, ge=1)
 ) -> List[PresidentialDocument]:
@@ -523,7 +523,7 @@ async def get_presidential_documents(
 @app.get("/presidential-documents/pdfs")
 async def get_presidential_documents(
     president: President = Query(default=President.TRUMP),
-    document_types: List[DocumentType] = Query(default=[DocumentType.EXECUTIVE_ORDER]),
+    document_types: List[str] = Query(default=["executive_order"]),
     per_page: int = Query(20, le=100),
     page: int = Query(1, ge=1)
 ) -> List[dict]:
@@ -533,7 +533,7 @@ async def get_presidential_documents(
     
     # Build conditions for document types
     document_type_params = [
-        f"conditions[presidential_document_type][]={doc_type.value}"
+        f"conditions[presidential_document_type][]={doc_type}"
         for doc_type in document_types
     ]
     
@@ -563,4 +563,37 @@ async def get_presidential_documents(
         raise HTTPException(
             status_code=500,
             detail=f"Error fetching presidential documents: {str(e)}"
+        )
+
+# New endpoint for viewing individual presidential document PDFs
+@app.get("/presidential-documents/view")
+async def view_presidential_document(url: str):
+    """View a specific presidential document PDF by URL - downloads and returns as base64"""
+    try:
+        # Download the PDF from the URL
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Convert PDF content to base64
+        base64_content = base64.b64encode(response.content).decode("utf-8")
+        
+        # Extract filename from URL for display purposes
+        filename = url.split('/')[-1] if '/' in url else "document.pdf"
+        if not filename.endswith('.pdf'):
+            filename += '.pdf'
+        
+        # Return plain dictionary to match multi-file viewer expectations
+        return {
+            "data_format": {"data_type": "pdf", "filename": filename},
+            "content": base64_content,
+        }
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error downloading presidential document: {str(e)}"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing presidential document: {str(e)}"
         )
