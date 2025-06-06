@@ -212,10 +212,15 @@ async def get_bill_summaries(
     number: str,
     format: str = Query("json", regex="^(json|xml)$"),
     offset: int = Query(0),
-    limit: int = Query(100, le=250)
+    limit: int = Query(200, le=250),
+    override_bill_number: Optional[str] = Query(None)
 ) -> str:
     """Get list of summaries for a specified bill from Congress API with markdown formatting"""
-    url = f"{CONGRESS_API_HOST}/bill/{congress}/{billType}/{number}/summaries"
+    
+    # Use override parameters if provided, otherwise use path parameters
+    actual_bill_number = override_bill_number if override_bill_number is not None else number
+    
+    url = f"{CONGRESS_API_HOST}/bill/{congress}/{billType}/{actual_bill_number}/summaries"
     params = {
         "api_key": CONGRESS_API_KEY,
         "format": format,
@@ -270,10 +275,17 @@ async def get_bill_text_versions(
     number: str,  # Path parameter
     format: str = Query("json", regex="^(json|xml)$"),
     offset: int = Query(0),
-    limit: int = Query(100, le=250)
+    limit: int = Query(100, le=250),
+    override_bill_number: Optional[str] = Query(None)
 ) -> List[TextVersion]:
     """Get list of text versions for a specified bill from Congress API"""
-    url = f"{CONGRESS_API_HOST}/bill/{congress}/{billType}/{number}/text"
+    
+    # Use override parameters if provided, otherwise use path parameters
+    actual_bill_number = override_bill_number if override_bill_number is not None else number
+    
+    url = f"{CONGRESS_API_HOST}/bill/{congress}/{billType}/{actual_bill_number}/text"
+
+    print(url)
     params = {
         "api_key": CONGRESS_API_KEY,
         "format": format,
@@ -423,7 +435,7 @@ async def get_congressional_record_by_volume_issue(
 async def get_bill_numbers(
     format: str = Query("json", regex="^(json|xml)$"),
     offset: int = Query(0),
-    limit: int = Query(100, le=250),
+    limit: int = Query(250, le=250),
     fromDateTime: Optional[str] = Query(None),
     toDateTime: Optional[str] = Query(None),
     sort: str = Query("updateDate+desc", regex="^(updateDate\\+asc|updateDate\\+desc)$")
@@ -445,8 +457,11 @@ async def get_bill_numbers(
         response.raise_for_status()
         bills_data = response.json().get("bills", [])
 
-        # Extract bill numbers from the response
-        bill_numbers = [int(bill.get("number")) for bill in bills_data if bill.get("number")]
+        # Extract bill numbers from the response and sort them numerically
+        bill_numbers = sorted([int(bill.get("number")) for bill in bills_data if bill.get("number")])
+
+        # Convert back to strings to match return type
+        bill_numbers = [str(num) for num in bill_numbers]
 
         print(bill_numbers)
 

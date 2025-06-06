@@ -310,8 +310,15 @@
         "value": 29,
         "label": "Bill Number",
         "type": "endpoint",
-        "show": true,
+        "show": false,
         "optionsEndpoint": "congress/bills/list"
+      },
+      {
+        "paramName": "override_bill_number",
+        "description": "Manually set the bill number",
+        "value": null,
+        "label": "Manually look up a bill number - Must clear the bill number field if not using",
+        "type": "text"
       }
     ]
   },
@@ -383,8 +390,15 @@
         "value": 29,
         "label": "Bill Number",
         "type": "endpoint",
-        "show": true,
+        "show": false,
         "optionsEndpoint": "congress/bills/list"
+      },
+      {
+        "paramName": "override_bill_number",
+        "description": "Manually set the bill number",
+        "value": null,
+        "label": "Manually look up a bill number - Must clear the bill number field if not using",
+        "type": "text"
       }
     ]
   },
