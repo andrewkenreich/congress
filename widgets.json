@@ -323,13 +323,13 @@
     ]
   },
   "billTextVersions": {
-    "name": "Bill Text Versions",
-    "description": "Get text versions of a specific bill",
+    "name": "Bill Text Versions PDFs",
+    "description": "View bill text versions as PDFs",
     "category": "government",
     "searchCategory": "congress",
-    "type": "file_viewer",
-    "fileEndpoint": "get_bill_html",
-    "endpoint": "congress/{congress}/bills/{billType}/{number}/text",
+    "type": "multi_file_viewer",
+    "runButton": false,
+    "endpoint": "congress/bills/view-pdf",
     "gridData": {
       "w": 20,
       "h": 9
@@ -399,6 +399,25 @@
         "value": null,
         "label": "Manually look up a bill number - Must clear the bill number field if not using",
         "type": "text"
+      },
+      {
+        "type": "endpoint",
+        "paramName": "url",
+        "value": [],
+        "label": "Bill PDF Versions",
+        "description": "Select bill text versions to view as PDF",
+        "optionsEndpoint": "congress/bills/pdfs",
+        "roles": [
+          "fileSelector"
+        ],
+        "multiSelect": true,
+        "show": false,
+        "optionsParams": {
+          "congress": "$congress",
+          "billType": "$billType",
+          "number": "$number",
+          "override_bill_number": "$override_bill_number"
+        }
       }
     ]
   },

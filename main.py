@@ -303,6 +303,20 @@ async def get_bill_text_versions(
         for text_version in text_versions_data:
             for format in text_version.get("formats", []):
                 # Filter for Formatted Text - can get PDF but file_viewer doesnt work for this yet - https://api.congress.gov/#/bill/bill_text
+                # Format is like this             "formats": [
+            #     {
+            #         "type": "Formatted Text",
+            #         "url": "https://www.congress.gov/117/bills/hr3076/BILLS-117hr3076pcs2.htm"
+            #     },
+            #     {
+            #         "type": "PDF",
+            #         "url": "https://www.congress.gov/117/bills/hr3076/BILLS-117hr3076pcs2.pdf"
+            #     },
+            #     {
+            #         "type": "Formatted XML",
+            #         "url": "https://www.congress.gov/117/bills/hr3076/BILLS-117hr3076pcs2.xml"
+            #     }
+            # ],
                 if format.get("type") == "Formatted Text":
                     pdf_versions.append({
                         "title": text_version.get("type"),
