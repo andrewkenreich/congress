@@ -626,3 +626,84 @@ async def view_presidential_document(url: str):
             status_code=500,
             detail=f"Error processing presidential document: {str(e)}"
         )
+
+# For getting Congress Bills PDFs options
+@app.get("/congress/bills/pdfs")
+@cache(expire=3600)  # Cache for 1 hour
+async def get_congress_bills_pdfs(
+    congress: int = Query(..., description="Congress number"),
+    billType: str = Query(..., description="Bill type"),
+    number: Optional[str] = Query(None, description="Bill number"),
+    override_bill_number: Optional[str] = Query(None, description="Override bill number"),
+    format: str = Query("json", regex="^(json|xml)$"),
+    offset: int = Query(0),
+    limit: int = Query(100, le=250)
+) -> List[dict]:
+    """Get list of PDF versions for a specified bill from Congress API"""
+    
+    # Use override parameters if provided, otherwise use path parameters
+    actual_bill_number = override_bill_number if override_bill_number is not None else number
+    
+    if not actual_bill_number:
+        raise HTTPException(status_code=400, detail="Bill number is required")
+    
+    url = f"{CONGRESS_API_HOST}/bill/{congress}/{billType}/{actual_bill_number}/text"
+    params = {
+        "api_key": CONGRESS_API_KEY,
+        "format": format,
+        "offset": offset,
+        "limit": limit
+    }
+
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        text_versions_data = response.json().get("textVersions", [])
+
+        # Filter and transform the response to include only PDF versions
+        pdf_options = []
+        for text_version in text_versions_data:
+            for format_item in text_version.get("formats", []):
+                if format_item.get("type") == "PDF":
+                    version_label = f"{text_version.get('type', 'Unknown')} ({text_version.get('date', 'No date')})"
+                    pdf_options.append({
+                        "label": version_label,
+                        "value": format_item.get("url")
+                    })
+
+        return pdf_options
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching bill PDF options: {str(e)}")
+
+# For viewing Congress Bills PDFs
+@app.get("/congress/bills/view-pdf")
+async def view_congress_bill_pdf(url: str):
+    """View a specific congress bill PDF by URL - downloads and returns as base64"""
+    try:
+        # Download the PDF from the URL
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Convert PDF content to base64
+        base64_content = base64.b64encode(response.content).decode("utf-8")
+        
+        # Extract filename from URL for display purposes
+        filename = url.split('/')[-1] if '/' in url else "bill.pdf"
+        if not filename.endswith('.pdf'):
+            filename += '.pdf'
+        
+        # Return plain dictionary to match multi-file viewer expectations
+        return {
+            "data_format": {"data_type": "pdf", "filename": filename},
+            "content": base64_content,
+        }
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error downloading congress bill PDF: {str(e)}"
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing congress bill PDF: {str(e)}"
+        )
